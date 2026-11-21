@@ -1,1 +1,39 @@
-
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#102b60">
+<title>NGAMS TRANSFER</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#eef3fa;font-family:Arial,sans-serif;color:#152b4d}header{background:#102b60;color:white;padding:30px 20px;text-align:center}h1{margin:0;font-size:27px}header p{opacity:.85}.wrap{max-width:480px;margin:auto;padding:18px}.card{background:white;padding:20px;border-radius:18px;margin-bottom:16px;box-shadow:0 3px 12px #102b6012}label{display:block;font-weight:bold;margin:14px 0 6px}input,select{width:100%;padding:14px;border:1px solid #ccd5e2;border-radius:10px;font-size:16px;background:white}button{background:#1167db;color:white;border:0;border-radius:11px;padding:15px;width:100%;font-size:16px;font-weight:bold;margin-top:18px}.result{background:#e9f3ff;padding:15px;border-radius:12px;margin-top:16px;line-height:1.9}.muted{font-size:13px;color:#64748b}.notice{background:#fff3d9;padding:12px;border-radius:10px;font-size:13px}.nav{display:flex;gap:8px}.nav button{font-size:13px;padding:12px 5px;background:#102b60}.hidden{display:none}footer{text-align:center;font-size:12px;color:#667;margin:24px}
+</style>
+</head>
+<body>
+<header><h1>🌍 NGAMS TRANSFER</h1><p>Votre argent, sans frontières</p></header>
+<div class="wrap">
+<div class="notice">MODE DÉMONSTRATION — Aucun transfert réel, aucun paiement.</div>
+<div class="nav"><button onclick="show('transfer')">Transfert</button><button onclick="show('referral')">Parrainage</button><button onclick="show('history')">Historique</button></div>
+<section id="transfer" class="card">
+<h2>Simuler un transfert</h2>
+<label>Pays de départ</label><select id="origin"><option>France</option><option>Belgique</option><option>Allemagne</option><option>Canada</option><option>États-Unis</option></select>
+<label>Pays de destination</label><select id="dest"><option>Cameroun</option><option>Côte d'Ivoire</option><option>Sénégal</option><option>RDC</option><option>Mali</option><option>Gabon</option><option>Nigeria</option><option>Ghana</option></select>
+<label>Montant en euros (simulation)</label><input id="amount" type="number" min="1" step=".01" value="100">
+<div class="result" id="result"></div>
+<button onclick="simulate()">Simuler le transfert</button>
+<p class="muted">Commission fictive : 2 € par transfert. Aucun taux de change réel n'est utilisé.</p>
+</section>
+<section id="referral" class="card hidden"><h2>Mon parrainage</h2><p>Code de démonstration :</p><h2>NGAMS2026</h2><button onclick="navigator.clipboard.writeText('NGAMS2026').then(()=>alert('Code copié')).catch(()=>alert('Copiez NGAMS2026 manuellement'))">Copier mon code</button><p class="muted">Le système de récompenses n'est pas encore activé.</p></section>
+<section id="history" class="card hidden"><h2>Historique de démonstration</h2><div id="entries">Aucune simulation enregistrée.</div><button onclick="clearHistory()">Effacer l'historique</button></section>
+<footer>NGAMS DIGITAL © 2026 — Prototype non financier</footer>
+</div>
+<script>
+const euro=n=>new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format(n);
+function show(id){document.querySelectorAll('section').forEach(s=>s.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');if(id==='history')historyView()}
+function calculate(){let a=Number(document.getElementById('amount').value);if(!Number.isFinite(a)||a<=0){document.getElementById('result').textContent='Saisissez un montant valide.';return null}document.getElementById('result').innerHTML='Montant : '+euro(a)+'<br>Commission : '+euro(2)+'<br><strong>Total à payer : '+euro(a+2)+'</strong>';return a}
+function simulate(){let a=calculate();if(a===null)return;let entries=JSON.parse(localStorage.getItem('ngamsDemo')||'[]');entries.unshift({date:new Date().toLocaleString('fr-FR'),amount:a,dest:document.getElementById('dest').value});localStorage.setItem('ngamsDemo',JSON.stringify(entries.slice(0,20)));alert('Simulation enregistrée. Aucun argent envoyé.')}
+function historyView(){let entries=JSON.parse(localStorage.getItem('ngamsDemo')||'[]');document.getElementById('entries').textContent=entries.length?'':'Aucune simulation enregistrée.';if(entries.length){document.getElementById('entries').innerHTML='';entries.forEach(e=>{let p=document.createElement('p');p.textContent=e.date+' — '+e.dest+' — '+euro(e.amount);document.getElementById('entries').appendChild(p)})}}
+function clearHistory(){localStorage.removeItem('ngamsDemo');historyView()}
+document.getElementById('amount').addEventListener('input',calculate);calculate();
+</script>
+</body></html>
