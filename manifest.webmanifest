@@ -1,0 +1,21 @@
+{
+  "id": "./",
+  "name": "NGAMS TRANSFER — Démonstration",
+  "short_name": "NGAMS TRANSFER",
+  "description": "Prototype de démonstration, sans transfert ni paiement réel.",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F4F7FC",
+  "theme_color": "#102B60",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
